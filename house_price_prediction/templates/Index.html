@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --primary-hover: #345384;
+            --accent: #ff9f43;
+            --text: #2d3436;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .icon {
+            margin-right: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🏡 House Price Prediction</h2>
+    
+    <div class="form-group">
+        <label for="size">Size (sq ft):</label>
+        <input type="number" id="size" placeholder="Enter house size">
+    </div>
+    
+    <div class="form-group">
+        <label for="bedrooms">Bedrooms:</label>
+        <input type="number" id="bedrooms" placeholder="Enter number of bedrooms">
+    </div>
+    
+    <div class="form-group">
+        <label for="age">Age of House:</label>
+        <input type="number" id="age" placeholder="Enter age of house">
+    </div>
+    
+    <button id="predict-button">Predict Price</button>
+    
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <div id="result"></div>
+</div>
+
+<script>
+    document.getElementById('predict-button').addEventListener('click', function() {
+        // Show loading spinner
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+        
+        // Get input values
+        const size = document.getElementById('size').value;
+        const bedrooms = document.getElementById('bedrooms').value;
+        const age = document.getElementById('age').value;
+        
+        // Simple validation
+        if (!size || !bedrooms || !age) {
+            alert('Please fill in all fields');
+            document.getElementById('loading').style.display = 'none';
+            return;
+        }
+        
+        // Simulate API call with timeout
+        setTimeout(() => {
+            // In a real application, this would call your API endpoint
+            /*
+            fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "Size": parseInt(size),
+                    "Bedrooms": parseInt(bedrooms),
+                    "Age": parseInt(age)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = "Predicted Price: " + data["Predicted Price"];
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById('loading').style.display = 'none';
+            });
+            */
+            
+            // For demo purposes, calculate a simple price
+            const basePrice = 150000;
+            const sizePrice = size * 100;
+            const bedroomPrice = bedrooms * 25000;
+            const ageDiscount = age * 1000;
+            
+            const totalPrice = basePrice + sizePrice + bedroomPrice - ageDiscount;
+            const formattedPrice = '$' + totalPrice.toLocaleString();
+            
+            document.getElementById('result').innerText = "Predicted Price: " + formattedPrice;
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }, 1000);
+    });
+</script>
+
+</body>
+</html>
